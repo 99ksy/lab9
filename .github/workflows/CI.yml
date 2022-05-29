@@ -31,7 +31,7 @@ jobs:
       
     - name: Run github-release
       run: /home/runner/go/bin/github-release release \
-        --user ${GITHUB_USERNAME} \
+        --user 99ksy \
         --repo lab9 \
         --tag ${GITHUB_REF_NAME} \
         --name "libprint" \
@@ -39,7 +39,7 @@ jobs:
     
     - name: Add file to release
       run: /home/runner/go/bin/github-release upload \
-        --user ${GITHUB_USERNAME} \
+        --user 99ksy \
         --repo lab9 \
         --tag ${GITHUB_REF_NAME} \
         --name "${PACKAGE_FILENAME}" \
