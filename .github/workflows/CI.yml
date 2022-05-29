@@ -20,7 +20,7 @@ jobs:
     - name: Install github-release
       run: |
         go install github.com/aktau/github-release@latest
-        alias github-release=./go/bin/github-release
+        alias github-release=`go env GOPATH`/bin/github-release
       
     - name: Build package
       run: |
