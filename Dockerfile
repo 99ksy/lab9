@@ -20,7 +20,8 @@ ENV LOG_PATH /home/logs/log.txt
 # задаём путь, где docker будет хранить данные
 VOLUME /home/logs
 
-# переходи
+# переходим в директорию _install/bin
 WORKDIR _install/bin
 
+# запускаем код в директории demo
 ENTRYPOINT ./demo
