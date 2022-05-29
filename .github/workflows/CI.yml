@@ -1,27 +1,48 @@
 name: CMake
 
 on:
-  push:
-    branches: [ main ]
+ push:
+   tags:
+     - v**
 
 jobs:
-  build:
-    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
-    # You can convert this to a matrix build if you need cross-platform coverage.
-    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+
+  build_packages:
+
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
-    - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -S. -B_build -DCMAKE_INSTALL_PREFIX=_install
-
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build _build
+    - name: Install go
+      run: sudo snap install go --classic
+    
+    - name: Install github-release
+      run: |
+      go install github.com/aktau/github-release@latest
+      alias github-release=~/go/bin/github-release
       
-    - name: Install
-      run: cmake --build _build --target install
+    - name: Build package
+      run: |
+      cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+      cmake --build _build --target package
+      
+    - name: File name
+      run: export PACKAGE_FILENAME=print-`uname -s`-`uname -m`.tar.gz
+      
+    - name: Run github-release
+      run: github-release release \
+    --user ${GITHUB_USERNAME} \
+    --repo lab9 \
+    --tag ${GITHUB_REF_NAME} \
+    --name "libprint" \
+    --description ${GITHUB_REF_NAME}
+    
+    - name: Add file to release
+      run: github-release upload \
+    --user ${GITHUB_USERNAME} \
+    --repo lab9 \
+    --tag ${GITHUB_REF_NAME} \
+    --name "${PACKAGE_FILENAME}" \
+    --file _build/*.tar.gz
+
