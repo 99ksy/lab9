@@ -31,7 +31,7 @@ jobs:
       run: export PACKAGE_FILENAME=print-`uname -s`-`uname -m`.tar.gz
       
     - name: Run github-release
-      run: github-release release \
+      run: `go env GOPATH`/bin/github-release release \
         --user ${GITHUB_USERNAME} \
         --repo lab9 \
         --tag ${GITHUB_REF_NAME} \
@@ -39,7 +39,7 @@ jobs:
         --description ${GITHUB_REF_NAME}
     
     - name: Add file to release
-      run: github-release upload \
+      run: `go env GOPATH`/bin/github-release upload \
         --user ${GITHUB_USERNAME} \
         --repo lab9 \
         --tag ${GITHUB_REF_NAME} \
