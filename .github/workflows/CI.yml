@@ -32,17 +32,17 @@ jobs:
       
     - name: Run github-release
       run: github-release release \
-    --user ${GITHUB_USERNAME} \
-    --repo lab9 \
-    --tag ${GITHUB_REF_NAME} \
-    --name "libprint" \
-    --description ${GITHUB_REF_NAME}
+        --user ${GITHUB_USERNAME} \
+        --repo lab9 \
+        --tag ${GITHUB_REF_NAME} \
+        --name "libprint" \
+        --description ${GITHUB_REF_NAME}
     
     - name: Add file to release
       run: github-release upload \
-    --user ${GITHUB_USERNAME} \
-    --repo lab9 \
-    --tag ${GITHUB_REF_NAME} \
-    --name "${PACKAGE_FILENAME}" \
-    --file _build/*.tar.gz
+        --user ${GITHUB_USERNAME} \
+        --repo lab9 \
+        --tag ${GITHUB_REF_NAME} \
+        --name "${PACKAGE_FILENAME}" \
+        --file _build/*.tar.gz
 
