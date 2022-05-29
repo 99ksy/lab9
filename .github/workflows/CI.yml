@@ -19,13 +19,13 @@ jobs:
     
     - name: Install github-release
       run: |
-      go install github.com/aktau/github-release@latest
-      alias github-release=~/go/bin/github-release
+        go install github.com/aktau/github-release@latest
+        alias github-release=~/go/bin/github-release
       
     - name: Build package
       run: |
-      cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
-      cmake --build _build --target package
+        cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
+        cmake --build _build --target package
       
     - name: File name
       run: export PACKAGE_FILENAME=print-`uname -s`-`uname -m`.tar.gz
