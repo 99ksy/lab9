@@ -31,11 +31,11 @@ jobs:
       
     - name: Run github-release
       run: /home/runner/go/bin/github-release release \
-        --user 99ksy \
-        --repo lab9 \
-        --tag ${GITHUB_REF_NAME} \
-        --name "libprint" \
-        --description "libprint"
+       --user 99ksy \
+       --repo lab9 \
+       --tag ${GITHUB_REF_NAME} \
+       --name "libprint" \
+       --description "libprint"
     
     - name: Add file to release
       run: /home/runner/go/bin/github-release upload \
