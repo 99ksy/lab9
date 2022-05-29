@@ -1,5 +1,6 @@
 name: CMake
 
+# Запускается при push тега, начинающегося на v
 on:
  push:
    tags:
@@ -13,35 +14,45 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
+    
+    # Устанавливаем go
     - name: Install go
       run: sudo snap install go --classic
     
+    # Через go устанавливаем github-release
     - name: Install github-release
       run: go install github.com/aktau/github-release@latest
-     #   alias github-release=`go env GOPATH`/bin/github-release
-      
+    
+    # Собираем, создаём пакет (в нашем случае архив формата .tar.gz)
     - name: Build package
       run: |
         cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
         cmake --build _build --target package
       
+    # Собираем имя файла по шаблону print-<Операционная система>-<Архитектура процессора>
     - name: File name
       run: export PACKAGE_FILENAME=print-`uname -s`-`uname -m`.tar.gz
       
+      
+    # Создаём релиз с помощью github-release
     - name: Run github-release
       run: /home/runner/go/bin/github-release release \
+       # Указываем пользователя и репозиторий
        --user 99ksy \
        --repo lab9 \
+       # Указываем тег, на основе которого создаём релиз
        --tag ${GITHUB_REF_NAME} \
+       # Задаём имя и описание
        --name "libprint" \
-       --description "libprint"
+       --description "libprint ${GITHUB_REF_NAME}"
     
+    # Добавляем собранный ранее пакет к релизу
     - name: Add file to release
       run: /home/runner/go/bin/github-release upload \
+        # Снова указываем пользователя, репозиторий и тег
         --user 99ksy \
         --repo lab9 \
         --tag ${GITHUB_REF_NAME} \
+        # Указываем имя файла и путь к нему
         --name "${PACKAGE_FILENAME}" \
         --file _build/*.tar.gz
-
