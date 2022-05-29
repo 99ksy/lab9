@@ -35,7 +35,7 @@ jobs:
         --repo lab9 \
         --tag ${GITHUB_REF_NAME} \
         --name "libprint" \
-        --description ${GITHUB_REF_NAME}
+        --description "libprint ${GITHUB_REF_NAME}"
     
     - name: Add file to release
       run: /home/runner/go/bin/github-release upload \
