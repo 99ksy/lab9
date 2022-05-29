@@ -26,6 +26,7 @@ jobs:
       run: |
         cmake -H. -B_build -DCPACK_GENERATOR="TGZ"
         cmake --build _build --target package
+        echo `go env GOPATH`
       
     - name: File name
       run: export PACKAGE_FILENAME=print-`uname -s`-`uname -m`.tar.gz
